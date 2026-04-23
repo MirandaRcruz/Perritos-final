@@ -1,145 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
+import 'screens/login_screen.dart';
+import 'screens/perritos_screen.dart';
+import 'services/auth_service.dart';
 
-void main() {
-  runApp(PerritosApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final authService = AuthService();
+  await authService.init();
+
+  runApp(const PerritosApp());
 }
 
 class PerritosApp extends StatelessWidget {
+  const PerritosApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Perritos',
+      title: 'Perritos App',
       debugShowCheckedModeBanner: false,
-      home: PantallaPerritos(),
-    );
-  }
-}
-
-class PantallaPerritos extends StatefulWidget {
-  @override
-  _PantallaPerritosState createState() => _PantallaPerritosState();
-}
-
-class _PantallaPerritosState extends State<PantallaPerritos> {
-  final nombreController = TextEditingController();
-  final razaController = TextEditingController();
-  final edadController = TextEditingController();
-  final colorController = TextEditingController();
-
-  File? imagen;
-  final picker = ImagePicker();
-
-  Future<void> seleccionarImagen() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      setState(() {
-        imagen = File(pickedFile.path);
-      });
-    }
-  }
-
-  void guardar() {
-    print("Nombre: ${nombreController.text}");
-    print("Raza: ${razaController.text}");
-    print("Edad: ${edadController.text}");
-    print("Color: ${colorController.text}");
-    print("Imagen: $imagen");
-  }
-
-  Widget tarjetaPregunta(String titulo, TextEditingController controller) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF6A1B9A)),
+        useMaterial3: true,
       ),
-      margin: EdgeInsets.only(bottom: 15),
-      child: Padding(
-        padding: EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(titulo,
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            SizedBox(height: 8),
-            TextField(
-              controller: controller,
-              decoration: InputDecoration(
-                hintText: "Escribe aquí...",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget tarjetaImagen() {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
-      ),
-      margin: EdgeInsets.only(bottom: 15),
-      child: Padding(
-        padding: EdgeInsets.all(12),
-        child: Column(
-          children: [
-            Text("Sube una foto de tu perrito 📸",
-                style: TextStyle(fontWeight: FontWeight.bold)),
-
-            SizedBox(height: 10),
-
-            ElevatedButton(
-              onPressed: seleccionarImagen,
-              child: Text("Seleccionar imagen"),
-            ),
-
-            SizedBox(height: 10),
-
-            imagen != null
-                ? Image.file(imagen!, height: 150)
-                : Text("No hay imagen"),
-          ],
-        ),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFF6A1B9A),
-      appBar: AppBar(
-        title: Text("Perritos 🐶"),
-        backgroundColor: Colors.purple,
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(16),
-        child: ListView(
-          children: [
-            tarjetaPregunta("¿Cómo se llama tu perrito?", nombreController),
-            tarjetaPregunta("¿Qué raza es?", razaController),
-            tarjetaPregunta("¿Qué edad tiene?", edadController),
-            tarjetaPregunta("¿De qué color es?", colorController),
-
-            tarjetaImagen(),
-
-            SizedBox(height: 10),
-
-            ElevatedButton(
-              onPressed: guardar,
-              child: Text("Guardar"),
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.all(15),
-              ),
-            ),
-          ],
-        ),
-      ),
+      home: AuthService().currentUser != null 
+          ? const PerritosScreen() 
+          : const LoginScreen(),
     );
   }
 }
