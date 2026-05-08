@@ -1,0 +1,608 @@
+\documentclass[12pt]{article}
+
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{array}
+\usepackage{hyperref}
+
+\geometry{a4paper, margin=2.5cm}
+
+\title{
+Proyecto Perritos \\ 
+Aplicación de Registro e Interacción de Mascotas
+}
+
+\author{
+Miranda Rodriguez Cruz
+}
+
+\date{2026}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{blue},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+% ---------------------------------------------------
+% INTRODUCCION
+% ---------------------------------------------------
+
+\section{Introducción}
+
+En este proyecto desarrollé una aplicación llamada \textbf{Perritos}, utilizando Flutter y Dart, con el objetivo de crear una pequeña red social enfocada en mascotas.
+
+La aplicación permite registrar perritos, agregar imágenes, comentar publicaciones y reaccionar mediante diferentes emojis. Además, integré Cloudinary para almacenar imágenes en la nube y Render para desplegar la aplicación web.
+
+Durante el desarrollo del proyecto me enfoqué principalmente en mantener una estructura organizada y reutilizable mediante el uso de patrones de diseño y principios SOLID.
+
+Una de las partes más importantes del proyecto fue separar correctamente responsabilidades para evitar código repetido y facilitar el mantenimiento del sistema.
+
+% ---------------------------------------------------
+% OBJETIVOS
+% ---------------------------------------------------
+
+\section{Objetivo General}
+
+Desarrollar una aplicación multiplataforma que permita registrar mascotas e interactuar mediante comentarios y reacciones utilizando tecnologías modernas y servicios en la nube.
+
+\section{Objetivos Específicos}
+
+\begin{itemize}
+    \item Implementar autenticación de usuarios.
+    \item Registrar mascotas dentro de la aplicación.
+    \item Permitir comentarios y reacciones.
+    \item Subir imágenes mediante Cloudinary.
+    \item Aplicar patrones de diseño.
+    \item Aplicar principios SOLID.
+    \item Desplegar la aplicación utilizando Render.
+    \item Generar un APK funcional.
+\end{itemize}
+
+% ---------------------------------------------------
+% TECNOLOGIAS
+% ---------------------------------------------------
+
+\section{Tecnologías Utilizadas}
+
+\begin{itemize}
+    \item Flutter
+    \item Dart
+    \item Cloudinary
+    \item Render
+    \item GitHub
+    \item Visual Studio Code
+    \item Overleaf
+\end{itemize}
+
+% ---------------------------------------------------
+% CAPTURAS
+% ---------------------------------------------------
+
+\section{Capturas del Sistema}
+
+\subsection{Pantalla de Login}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{login.png}
+\caption{Pantalla de inicio de sesión}
+\end{figure}
+
+\subsection{Registro de Mascotas}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{registro.png}
+\caption{Formulario de registro de mascotas}
+\end{figure}
+
+\subsection{Comentarios y Reacciones}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{comentarios.png}
+\caption{Sistema de comentarios y reacciones}
+\end{figure}
+
+% ---------------------------------------------------
+% SOLID
+% ---------------------------------------------------
+
+\section{Principios SOLID Aplicados}
+
+Durante el desarrollo del proyecto apliqué algunos principios SOLID con el objetivo de mantener el código más organizado, reutilizable y fácil de mantener.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{4cm}|p{9cm}|}
+\hline
+
+\textbf{Principio} & \textbf{Aplicación en el Proyecto} \\
+
+\hline
+
+Single Responsibility Principle (SRP)
+&
+Cada clase fue creada con una responsabilidad específica. \\
+
+\hline
+
+Open Closed Principle (OCP)
+&
+El sistema puede extenderse agregando nuevas funcionalidades sin modificar completamente la estructura principal. \\
+
+\hline
+
+Liskov Substitution Principle (LSP)
+&
+Los widgets reutilizables pueden sustituirse manteniendo compatibilidad visual y funcional. \\
+
+\hline
+
+Interface Segregation Principle (ISP)
+&
+Los servicios fueron separados según sus responsabilidades. \\
+
+\hline
+
+Dependency Inversion Principle (DIP)
+&
+Las pantallas dependen de servicios especializados para manejar funcionalidades externas. \\
+
+\hline
+
+\end{tabular}
+
+\caption{Principios SOLID utilizados}
+\end{table}
+
+% ---------------------------------------------------
+% SRP
+% ---------------------------------------------------
+
+\subsection{Single Responsibility Principle (SRP)}
+
+Este principio establece que una clase debe tener únicamente una responsabilidad.
+
+En mi proyecto decidí separar completamente la lógica relacionada con Cloudinary dentro de un servicio independiente.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{cloudinary.png}
+\caption{Servicio Cloudinary}
+\end{figure}
+
+\begin{lstlisting}[language=Dart]
+class CloudinaryService {
+
+  static Future<String?> uploadImageWeb(
+    Uint8List imageBytes,
+  ) async {
+
+  }
+}
+\end{lstlisting}
+
+\textbf{Explicación}
+
+La clase CloudinaryService únicamente se encarga de subir imágenes a Cloudinary.
+
+No contiene lógica relacionada con comentarios, mascotas o interfaz gráfica.
+
+Esto me permitió mantener una mejor organización y evitar mezclar responsabilidades.
+
+% ---------------------------------------------------
+% OCP
+% ---------------------------------------------------
+
+\subsection{Open Closed Principle (OCP)}
+
+Este principio establece que el sistema debe estar abierto para extensión pero cerrado para modificación.
+
+En el proyecto implementé las reacciones utilizando botones independientes, lo cual permite agregar nuevas reacciones fácilmente sin modificar completamente la lógica principal.
+
+\begin{lstlisting}[language=Dart]
+Wrap(
+  spacing: 10,
+  children: [
+
+    ElevatedButton(
+      child: Text('❤️'),
+    ),
+
+    ElevatedButton(
+      child: Text('��'),
+    ),
+
+    ElevatedButton(
+      child: Text('��'),
+    ),
+  ],
+)
+\end{lstlisting}
+
+\textbf{Explicación}
+
+Gracias a esta estructura puedo agregar nuevas reacciones posteriormente sin afectar otras partes del sistema.
+
+Esto facilita la escalabilidad y mantenimiento de la aplicación.
+
+% ---------------------------------------------------
+% LSP
+% ---------------------------------------------------
+
+\subsection{Liskov Substitution Principle (LSP)}
+
+Este principio establece que los componentes deben poder sustituirse sin afectar el funcionamiento general del sistema.
+
+Flutter trabaja naturalmente mediante widgets reutilizables.
+
+\begin{lstlisting}[language=Dart]
+Widget _tarjetaCampo(
+  String titulo,
+  TextEditingController controller,
+)
+\end{lstlisting}
+
+\textbf{Explicación}
+
+En este caso el widget puede reutilizarse múltiples veces dentro de la interfaz manteniendo el mismo comportamiento y estructura visual.
+
+Esto me permitió reducir código repetido y mantener consistencia en el diseño.
+
+% ---------------------------------------------------
+% ISP
+% ---------------------------------------------------
+
+\subsection{Interface Segregation Principle (ISP)}
+
+Este principio establece que las clases no deben depender de funcionalidades que no utilizan.
+
+En el proyecto decidí separar los servicios según sus funciones específicas.
+
+\begin{lstlisting}[language=Dart]
+final _auth = AuthService();
+
+final _picker = ImagePicker();
+\end{lstlisting}
+
+\textbf{Explicación}
+
+Cada servicio tiene una responsabilidad independiente.
+
+AuthService se encarga de autenticación mientras que ImagePicker únicamente maneja selección de imágenes.
+
+Esto mejora la modularidad y organización del proyecto.
+
+% ---------------------------------------------------
+% DIP
+% ---------------------------------------------------
+
+\subsection{Dependency Inversion Principle (DIP)}
+
+Este principio establece que las clases principales deben depender de abstracciones y servicios especializados.
+
+\begin{lstlisting}[language=Dart]
+final imageUrl =
+  await CloudinaryService.uploadImageWeb(
+    imageBytes,
+  );
+\end{lstlisting}
+
+\textbf{Explicación}
+
+La pantalla principal no implementa directamente toda la lógica HTTP para subir imágenes.
+
+En su lugar, delega esa responsabilidad a CloudinaryService.
+
+Esto facilita reutilizar el servicio y mantener una mejor separación de responsabilidades.
+
+% ---------------------------------------------------
+% PATRONES
+% ---------------------------------------------------
+
+\section{Patrones de Diseño Utilizados}
+
+Durante el desarrollo del proyecto utilicé diferentes patrones de diseño con el objetivo de mantener una estructura organizada, modular y fácil de mantener.
+
+Cada patrón fue utilizado para resolver problemas específicos dentro de la aplicación.
+
+% ---------------------------------------------------
+% MVC
+% ---------------------------------------------------
+
+\subsection{Patrón MVC}
+
+El patrón MVC fue uno de los patrones principales utilizados en el proyecto.
+
+MVC significa:
+
+\begin{itemize}
+    \item Model
+    \item View
+    \item Controller
+\end{itemize}
+
+La finalidad de este patrón es separar los datos, la interfaz gráfica y la lógica de control.
+
+Esto ayuda a mantener una estructura mucho más organizada.
+
+% ---------------------------------------------------
+% MODEL
+% ---------------------------------------------------
+
+\subsubsection{Model}
+
+El Model representa los datos de la aplicación.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{modelo.png}
+\caption{Modelo Dog y Comentario}
+\end{figure}
+
+\begin{lstlisting}[language=Dart]
+class Dog {
+
+  final String nombre;
+  final String raza;
+  final String edad;
+  final String color;
+
+  List<Comentario> comentarios;
+}
+\end{lstlisting}
+
+\textbf{Explicación}
+
+La clase Dog representa la estructura principal de datos utilizada para almacenar información de cada mascota.
+
+Además, contiene una lista de comentarios relacionados con cada publicación.
+
+% ---------------------------------------------------
+% VIEW
+% ---------------------------------------------------
+
+\subsubsection{View}
+
+La View representa la interfaz gráfica mostrada al usuario.
+
+\begin{lstlisting}[language=Dart]
+class PerritosScreen
+extends StatefulWidget {
+
+  const PerritosScreen({
+    super.key
+  });
+}
+\end{lstlisting}
+
+\textbf{Explicación}
+
+PerritosScreen representa la pantalla principal donde el usuario puede visualizar publicaciones, comentarios y reacciones.
+
+% ---------------------------------------------------
+% CONTROLLER
+% ---------------------------------------------------
+
+\subsubsection{Controller}
+
+El Controller se encarga de manejar eventos y actualizar la aplicación.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{perritos_screen.png}
+\caption{Lógica de PerritosScreen}
+\end{figure}
+
+\begin{lstlisting}[language=Dart]
+Future<void> _guardar() async {
+
+  final nuevoPerro = Dog(
+    nombre: nombre,
+    raza: raza,
+    edad: edad,
+    color: color,
+    imageUrl: imageUrl,
+  );
+
+  setState(() {
+    perros.add(nuevoPerro);
+  });
+}
+\end{lstlisting}
+
+\textbf{Explicación}
+
+La función _guardar() controla el proceso de registro de mascotas.
+
+Aquí se crean objetos Dog y posteriormente se actualiza el estado de la interfaz utilizando setState().
+
+% ---------------------------------------------------
+% COMPONENT BASED
+% ---------------------------------------------------
+
+\subsection{Component-Based Architecture}
+
+Flutter trabaja utilizando componentes reutilizables llamados widgets.
+
+Durante el proyecto utilicé componentes personalizados para evitar repetir código.
+
+\begin{lstlisting}[language=Dart]
+Widget _tarjetaCampo(
+  String titulo,
+  TextEditingController controller,
+)
+\end{lstlisting}
+
+\textbf{Explicación}
+
+Este componente fue utilizado múltiples veces dentro del formulario principal.
+
+Gracias a esto pude mantener una interfaz más consistente y reducir código repetido.
+
+% ---------------------------------------------------
+% STATE MANAGEMENT
+% ---------------------------------------------------
+
+\subsection{State Management}
+
+Para manejar cambios dinámicos dentro de la aplicación utilicé setState().
+
+\begin{lstlisting}[language=Dart]
+setState(() {
+  perros.add(nuevoPerro);
+});
+\end{lstlisting}
+
+\textbf{Explicación}
+
+setState() actualiza automáticamente la interfaz cuando se agregan nuevas mascotas, comentarios o reacciones.
+
+Esto permitió mantener una interacción dinámica dentro de la aplicación.
+
+% ---------------------------------------------------
+% SERVICE PATTERN
+% ---------------------------------------------------
+
+\subsection{Service Pattern}
+
+También utilicé el patrón Service para separar funcionalidades externas dentro de servicios independientes.
+
+\begin{lstlisting}[language=Dart]
+class CloudinaryService {
+
+}
+\end{lstlisting}
+
+\textbf{Explicación}
+
+CloudinaryService encapsula toda la lógica relacionada con Cloudinary.
+
+Esto permitió reutilizar fácilmente el servicio y mantener una mejor organización.
+
+% ---------------------------------------------------
+% SINGLETON
+% ---------------------------------------------------
+
+\subsection{Singleton}
+
+El patrón Singleton busca garantizar que exista una única instancia compartida de un servicio.
+
+\begin{lstlisting}[language=Dart]
+final _auth = AuthService();
+\end{lstlisting}
+
+\textbf{Explicación}
+
+En el proyecto reutilicé una única instancia de AuthService para manejar autenticación dentro de diferentes pantallas.
+
+Esto evita crear múltiples instancias innecesarias y mejora la administración global del servicio.
+
+% ---------------------------------------------------
+% CLOUDINARY
+% ---------------------------------------------------
+
+\section{Integración con Cloudinary}
+
+Cloudinary fue utilizado para almacenar imágenes en la nube.
+
+El flujo implementado fue el siguiente:
+
+\begin{enumerate}
+    \item El usuario selecciona una imagen.
+    \item Flutter envía la imagen a Cloudinary.
+    \item Cloudinary devuelve una URL.
+    \item La URL se guarda dentro del objeto Dog.
+\end{enumerate}
+
+\begin{lstlisting}[language=Dart]
+final imageUrl =
+  await CloudinaryService.uploadImageWeb(
+    imageBytes,
+  );
+\end{lstlisting}
+
+% ---------------------------------------------------
+% RENDER
+% ---------------------------------------------------
+
+\section{Despliegue en Render}
+
+La aplicación fue desplegada utilizando Render como plataforma de hosting web.
+
+Para realizar el despliegue primero actualicé el proyecto en GitHub y posteriormente configuré un Static Site dentro de Render.
+
+% ---------------------------------------------------
+% APK
+% ---------------------------------------------------
+
+\section{Generación APK}
+
+Finalmente generé un APK funcional utilizando Flutter.
+
+\begin{lstlisting}[language=bash]
+flutter build apk
+\end{lstlisting}
+
+% ---------------------------------------------------
+% CONCLUSIONES
+% ---------------------------------------------------
+
+\section{Conclusiones}
+
+Durante el desarrollo de este proyecto comprendí la importancia de mantener una estructura organizada y modular.
+
+La implementación de patrones de diseño y principios SOLID me permitió separar responsabilidades, reutilizar código y facilitar el mantenimiento del sistema.
+
+Además, integrar tecnologías como Cloudinary y Render permitió acercar el proyecto a un entorno más realista y profesional.
+
+% ---------------------------------------------------
+% REFERENCIAS
+% ---------------------------------------------------
+
+\section{Referencias}
+
+\begin{itemize}
+    \item Flutter Documentation
+    \item Dart Documentation
+    \item Cloudinary Documentation
+    \item Render Documentation
+    \item SOLID Principles
+\end{itemize}
+
+\end{document}
